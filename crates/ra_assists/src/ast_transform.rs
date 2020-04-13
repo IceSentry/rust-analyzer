@@ -53,6 +53,7 @@ impl<'a> SubstituteTypeParams<'a> {
             .skip(1)
             .zip(substs.into_iter())
             .collect();
+
         return SubstituteTypeParams {
             source_scope,
             substs: substs_by_param,
@@ -68,8 +69,10 @@ impl<'a> SubstituteTypeParams<'a> {
                 _ => return None,
             };
             let type_arg_list = path_type.path()?.segment()?.type_arg_list()?;
+
             let mut result = Vec::new();
             for type_arg in type_arg_list.type_args() {
+                println!("{:?}", type_arg);
                 let type_arg: ast::TypeArg = type_arg;
                 result.push(type_arg.type_ref()?);
             }
