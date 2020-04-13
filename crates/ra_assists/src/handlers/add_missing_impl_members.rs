@@ -579,4 +579,27 @@ impl Foo for S {
 }",
         )
     }
+
+    #[test]
+    fn test_generic_type_parameter() {
+        check_assist(
+            add_missing_impl_members,
+            "
+trait Foo<Rhs = Self> {
+    fn bar(&self, other: &Rhs);
+}
+struct S;
+impl Foo for S { <|> }
+            ",
+            "
+trait Foo<Rhs = Self> {
+    fn bar(&self, other: &Rhs);
+}
+struct S;
+impl Foo for S {
+    <|>fn bar(&self, other: &Self) { todo!() }
+}
+",
+        )
+    }
 }
